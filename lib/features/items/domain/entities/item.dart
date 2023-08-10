@@ -1,7 +1,7 @@
-import 'package:integrador_mobile/features/items/domain/entities/exceptions.dart';
 import 'package:integrador_mobile/features/items/domain/entities/person.dart';
 import 'package:intl/intl.dart';
 
+import 'item_state.dart';
 
 class Item {
   Item() {
@@ -30,56 +30,40 @@ class Item {
   String description() {
     throw 'Must be implemented in subclasses';
   }
-}
 
-abstract class ItemState {
-  void returnToStore(Item item);
+  DateTime? returnDate() => state.returnDate();
 
-  void reserve(Item item, Person person);
-
-  bool isReserved();
-}
-
-class AvailableState implements ItemState {
-  @override
-  void returnToStore(_) => throw CantReturnAvailableItemException;
-
-  @override
-  void reserve(Item item, Person person) {
-    item.changeState(ReservedState());
+  Duration numberOfDaysToReturn() {
+    throw 'Must be implemented in subclasses';
   }
-
-  @override
-  bool isReserved() => false;
-}
-
-class ReservedState implements ItemState {
-  @override
-  void returnToStore(Item item) {
-    item.changeState(AvailableState());
-  }
-
-  @override
-  bool isReserved() => true;
-
-  @override
-  void reserve(_, __) => throw CantReserveAlreadyReservedItemException;
 }
 
 class Book extends Item {
   final String title;
   final String author;
+  final int numberOfPages;
 
-  Book(this.title, this.author);
+  Book({
+    required this.title,
+    required this.author,
+    required this.numberOfPages,
+  });
 
   @override
   String description() {
     return '"$title", $author';
   }
+
+  @override
+  Duration numberOfDaysToReturn() {
+    final daysToAdd = (numberOfPages / 100).ceil();
+    return Duration(days: daysToAdd);
+  }
 }
 
 class Movie extends Item {
   final String title;
+  //minutes
   final int duration;
 
   Movie({
@@ -91,16 +75,25 @@ class Movie extends Item {
   String description() {
     return '"$title", $duration';
   }
+
+  @override
+  Duration numberOfDaysToReturn() {
+    final daysToAdd = duration > 119 ? 5 : 3;
+    return Duration(days: daysToAdd);
+  }
 }
 
-class Magazine extends Item{
+class Magazine extends Item {
   final String name;
   final int number;
   final DateTime publicationDate;
 
-  Magazine({required this.name, required this.number, required this.publicationDate});
+  Magazine(
+      {required this.name,
+      required this.number,
+      required this.publicationDate});
 
-  String dateFormat(DateTime date){
+  String dateFormat(DateTime date) {
     final format = DateFormat("MMMM yyyy", "es_AR");
     return format.format(date);
   }
@@ -108,5 +101,15 @@ class Magazine extends Item{
   @override
   String description() {
     return '"$name", numero $number, ${dateFormat(publicationDate)}';
+  }
+
+  @override
+  Duration numberOfDaysToReturn() {
+    final int daysToAdd = switch (publicationDate.year) {
+      < 1980 => 2,
+      >= 1980 && <= 2000 => 3,
+      _ => 5
+    };
+    return Duration(days: daysToAdd);
   }
 }
