@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:integrador_mobile/pages/detailPage.dart';
+
+import '../pages/detailPage.dart';
 
 class ItemContent extends StatelessWidget {
   const ItemContent({super.key});

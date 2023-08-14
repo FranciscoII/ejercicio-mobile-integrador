@@ -1,11 +1,14 @@
+import 'package:equatable/equatable.dart';
 import 'package:integrador_mobile/features/items/domain/entities/person.dart';
 import 'package:intl/intl.dart';
 
 import 'item_state.dart';
 
 class Item {
-  Item() {
-    state = AvailableState();
+  Item({DateTime? returnDate}) {
+    state = returnDate != null
+        ? ReservedState(expectedReturnDate: returnDate)
+        : AvailableState();
     numberOfReservations = 0;
   }
 
@@ -38,12 +41,13 @@ class Item {
   }
 }
 
-class Book extends Item {
+class Book extends Item with EquatableMixin {
   final String title;
   final String author;
   final int numberOfPages;
 
   Book({
+    super.returnDate,
     required this.title,
     required this.author,
     required this.numberOfPages,
@@ -59,14 +63,19 @@ class Book extends Item {
     final daysToAdd = (numberOfPages / 100).ceil();
     return Duration(days: daysToAdd);
   }
+
+  @override
+  List<Object?> get props => [title, author, numberOfPages];
 }
 
-class Movie extends Item {
+class Movie extends Item with EquatableMixin {
   final String title;
+
   //minutes
   final int duration;
 
   Movie({
+    super.returnDate,
     required this.title,
     required this.duration,
   });
@@ -81,15 +90,19 @@ class Movie extends Item {
     final daysToAdd = duration > 119 ? 5 : 3;
     return Duration(days: daysToAdd);
   }
+
+  @override
+  List<Object?> get props => [title, duration];
 }
 
-class Magazine extends Item {
+class Magazine extends Item with EquatableMixin {
   final String name;
   final int number;
   final DateTime publicationDate;
 
   Magazine(
-      {required this.name,
+      {super.returnDate,
+      required this.name,
       required this.number,
       required this.publicationDate});
 
@@ -112,4 +125,7 @@ class Magazine extends Item {
     };
     return Duration(days: daysToAdd);
   }
+
+  @override
+  List<Object?> get props => [name, number, publicationDate];
 }

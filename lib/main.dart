@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integrador_mobile/pages/homepage.dart';
+import 'features/items/presentation/pages/homepage.dart';
 
 void main() {
   runApp(const MyApp());

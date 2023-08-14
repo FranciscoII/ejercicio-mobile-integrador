@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../ItemContent.dart';
+import '../widgets/ItemContent.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
