@@ -1,8 +1,11 @@
 import 'package:integrador_mobile/features/items/domain/entities/item.dart';
 
+import '../../domain/entities/person.dart';
+
 class BookModel extends Book {
   BookModel(
       {super.returnDate,
+        super.reservedBy,
       required super.title,
       required super.author,
       required super.numberOfPages});
@@ -13,19 +16,21 @@ class BookModel extends Book {
       author: json['author'],
       numberOfPages: json["numberOfPages"],
       returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+      reservedBy: json['reservedBy'] != null ? Person(json['reservedBy']['name']) : null,
     );
     return book;
   }
 }
 
 class MovieModel extends Movie {
-  MovieModel({super.returnDate, required super.title, required super.duration});
+  MovieModel({super.returnDate, super.reservedBy, required super.title, required super.duration});
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
     final movie = MovieModel(
       title: json["title"],
       duration: json['duration'],
       returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+      reservedBy: json['reservedBy'] != null ? Person(json['reservedBy']['name']) : null,
     );
     return movie;
   }
@@ -34,6 +39,7 @@ class MovieModel extends Movie {
 class MagazineModel extends Magazine {
   MagazineModel(
       {super.returnDate,
+        super.reservedBy,
       required super.name,
       required super.number,
       required super.publicationDate});
@@ -44,6 +50,7 @@ class MagazineModel extends Magazine {
       number: json['number'],
       publicationDate: DateTime.parse(json['publicationDate']),
       returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+      reservedBy: json['reservedBy'] != null ? Person(json['reservedBy']['name']) : null,
     );
     return magazine;
   }

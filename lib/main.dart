@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'features/items/presentation/pages/homepage.dart';
 
 void main() {
+  initializeDateFormatting();
   runApp(const MyApp());
 }
 
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(title: 'RESERVAS'),
+      home: HomePage(title: 'RESERVAS'),
     );
   }
 }

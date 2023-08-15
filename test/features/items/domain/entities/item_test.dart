@@ -20,7 +20,7 @@ void main(){
   test('An item can be reserved by a person', () {
     anItem.reserve(aPerson);
     expect(anItem.isReserved(), true);
-    // expect(item.reservedBy, person);
+    expect(anItem.reservedBy, aPerson);
     expect(anItem.numberOfReservations, 1);
   });
   test('An item reserved can be returned', () {
@@ -43,7 +43,7 @@ void main(){
     });
     test('A movie description is its title and duration', (){
       final aMovie = Movie(title: 'El piola', duration: 150);
-      expect(aMovie.description(), '"El piola", 150');
+      expect(aMovie.description(), '"El piola", 150 minutos');
     });
     test('A magazine description is its name, number and publication date', (){
       final aMagazine = Magazine(name: 'magazine', number: 2, publicationDate: DateTime(1999, 8, 9));
@@ -94,7 +94,6 @@ void main(){
       expectItemReturnDateIsAfterXDays(aMagazinePublishedAfter2000, 5);
     });
   });
-
 }
 void expectItemReturnDateIsAfterXDays(Item item, int days){
   final expectedDate = DateTime.now().add(Duration(days: days));

@@ -10,6 +10,8 @@ abstract class ItemState {
   bool isReserved();
 
   DateTime? returnDate();
+
+  reservedBy() {}
 }
 
 class AvailableState implements ItemState {
@@ -19,8 +21,9 @@ class AvailableState implements ItemState {
   @override
   void reserve(Item item, Person person) {
     item.changeState(ReservedState(
-        expectedReturnDate: DateTime.now().add(item.numberOfDaysToReturn()))
-    );
+      expectedReturnDate: DateTime.now().add(item.numberOfDaysToReturn()),
+      person: person,
+    ));
   }
 
   @override
@@ -28,12 +31,16 @@ class AvailableState implements ItemState {
 
   @override
   DateTime? returnDate() => null;
+
+  @override
+  reservedBy() => null;
 }
 
 class ReservedState implements ItemState {
   DateTime expectedReturnDate;
+  Person person;
 
-  ReservedState({required this.expectedReturnDate});
+  ReservedState({required this.expectedReturnDate, required this.person});
 
   @override
   void returnToStore(Item item) {
@@ -50,4 +57,7 @@ class ReservedState implements ItemState {
   DateTime? returnDate() {
     return expectedReturnDate;
   }
+
+  @override
+  reservedBy() => person;
 }
