@@ -35,8 +35,10 @@ class ItemContent extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              DetailPage(title: 'Copa', item: item,))),
+                          builder: (context) => DetailPage(
+                                title: 'Copa',
+                                item: item,
+                              ))),
                 },
             child: const Icon(Icons.arrow_forward_ios))
       ],
@@ -59,7 +61,7 @@ Widget _buildContent(Item item) {
           icon: Icons.check_circle_rounded),
     ]);
   } else {
-    return const InfoLabel(text: 'Disponible', icon: Icons.calendar_month);
+    return InfoLabel.available();
   }
 }
 
@@ -91,6 +93,13 @@ class InfoLabel extends StatelessWidget {
   final IconData icon;
 
   const InfoLabel({super.key, required this.text, required this.icon});
+
+  factory InfoLabel.available() {
+    return const InfoLabel(
+      text: 'Disponible',
+      icon: Icons.calendar_month,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

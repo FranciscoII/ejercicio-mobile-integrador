@@ -13,7 +13,7 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Center(child: Text('TITULO')),
+          title: const Center(child: Text('TITULO')),
         ),
         body: Column(
           children: [
@@ -21,24 +21,48 @@ class DetailPage extends StatelessWidget {
               item.description(),
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            InfoLabel(
-              text: 'Disponible',
-              icon: Icons.calendar_month,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Divider(),
-            ),
-            DropdownButton(
-              items: const [DropdownMenuItem(child: Text('Fran'))],
-              onChanged: (value) {},
-            ),
-            InfoLabel(
-              text: 'Devolucion prevista 25/09/2029',
-              icon: Icons.check_circle_rounded,
-            ),
-            ElevatedButton(onPressed: (){}, child: Text('PRESTAR'))
+            item.isReserved() ? ReservedItemContent() : AvailableItemContent(),
           ],
         ));
+  }
+}
+
+class AvailableItemContent extends StatelessWidget {
+  const AvailableItemContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InfoLabel.available(),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          child: Divider(),
+        ),
+        DropdownButton(
+          items: const [DropdownMenuItem(child: Text('Fran'))],
+          onChanged: (value) {},
+        ),
+        const InfoLabel(
+          text: 'Devolucion prevista 25/09/2029',
+          icon: Icons.check_circle_rounded,
+        ),
+        ElevatedButton(onPressed: () {}, child: const Text('PRESTAR'))
+      ],
+    );
+  }
+}
+
+class ReservedItemContent extends StatelessWidget {
+  const ReservedItemContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {},
+        child: const Text('Marcar como devuelto'),
+      ),
+    );
   }
 }
