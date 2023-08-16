@@ -3,9 +3,8 @@ import 'package:integrador_mobile/features/items/presentation/widgets/ItemConten
 import '../../domain/entities/item.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key, required this.title, required this.item});
+  const DetailPage({super.key, required this.item});
 
-  final String title;
   final Item item;
 
   @override

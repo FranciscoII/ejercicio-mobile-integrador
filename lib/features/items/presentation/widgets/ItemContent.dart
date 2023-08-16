@@ -36,7 +36,6 @@ class ItemContent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailPage(
-                                title: 'Copa',
                                 item: item,
                               ))),
                 },
