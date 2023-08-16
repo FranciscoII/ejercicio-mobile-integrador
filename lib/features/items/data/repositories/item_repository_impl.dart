@@ -20,6 +20,6 @@ class ItemRepositoryImpl implements ItemRepository{
 
   @override
   Future<List<Item>> getItems() {
-    return Future.delayed(const Duration(milliseconds: 100), () => itemList);
+    return Future.delayed(const Duration(milliseconds: 2000), () => itemList);
   }
 }
