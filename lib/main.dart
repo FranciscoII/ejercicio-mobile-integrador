@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrador_mobile/features/items/data/repositories/item_repository_impl.dart';
+import 'package:integrador_mobile/features/items/domain/repositories/item_repository.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'features/items/presentation/pages/homepage.dart';
 
 void main() {
   initializeDateFormatting();
-  runApp(const MyApp());
+  runApp(MyApp(itemRepository: ItemRepositoryImpl(),));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ItemRepository itemRepository;
+  const MyApp({required this.itemRepository, super.key});
 
   // This widget is the root of your application.
   @override
@@ -48,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomePage(title: 'RESERVAS'),
+      home: RepositoryProvider.value(value: itemRepository, child: HomePage(title: 'RESERVAS')),
     );
   }
 }

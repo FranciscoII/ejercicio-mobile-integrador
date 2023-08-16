@@ -3,6 +3,7 @@ import 'package:integrador_mobile/features/items/domain/entities/person.dart';
 import 'package:integrador_mobile/features/items/domain/repositories/item_repository.dart';
 
 class ItemRepositoryImpl implements ItemRepository{
+  ItemRepositoryImpl();
 
   final List<Item> itemList = [
     Book(title: '1984', author: 'George Orwell', numberOfPages: 203),
@@ -18,7 +19,7 @@ class ItemRepositoryImpl implements ItemRepository{
   ];
 
   @override
-  List<Item> getItems() {
-    return itemList;
+  Future<List<Item>> getItems() {
+    return Future.delayed(const Duration(milliseconds: 100), () => itemList);
   }
 }
