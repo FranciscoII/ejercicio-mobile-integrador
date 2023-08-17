@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'item_state.dart';
 
-class Item {
+abstract class Item {
   Item({DateTime? returnDate, Person? reservedBy}) {
     state = returnDate != null && reservedBy != null
         ? ReservedState(expectedReturnDate: returnDate, person: reservedBy)
@@ -15,7 +15,7 @@ class Item {
   late ItemState state;
   late int numberOfReservations;
 
-  get reservedBy => state.reservedBy();
+  Person? get reservedBy => state.reservedBy();
 
   isReserved() => state.isReserved();
 
@@ -23,6 +23,8 @@ class Item {
     state.reserve(this, person);
     numberOfReservations += 1;
   }
+
+  Item copy();
 
   void returnToStore() {
     state.returnToStore(this);
@@ -32,24 +34,31 @@ class Item {
     this.state = state;
   }
 
-  String description() {
-    throw 'Must be implemented in subclasses';
-  }
+  String description();
 
   DateTime? returnDate() => state.returnDate();
 
-  Duration numberOfDaysToReturn() {
-    throw 'Must be implemented in subclasses';
-  }
+  Duration numberOfDaysToReturn();
 
-  String header(){
-    throw 'Must be implemented in subclasses';
-  }
+  int credits();
+}
+
+enum Genre {
+  drama(credits: 10),
+  terror(credits: 20),
+  other(credits: 30);
+
+  const Genre({
+    required this.credits,
+  });
+
+  final int credits;
 }
 
 class Book extends Item with EquatableMixin {
   final String title;
   final String author;
+  final Genre genre;
   final int numberOfPages;
 
   Book({
@@ -58,6 +67,7 @@ class Book extends Item with EquatableMixin {
     required this.title,
     required this.author,
     required this.numberOfPages,
+    this.genre = Genre.drama,
   });
 
   @override
@@ -72,14 +82,29 @@ class Book extends Item with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [title, author, numberOfPages];
+  List<Object?> get props => [title, author, numberOfPages, reservedBy];
+
+  String header() => '$title, $author';
 
   @override
-  String header() => '$title, $author';
+  int credits() => genre.credits;
+
+  @override
+  Book copy() {
+    return Book(
+      title: title,
+      author: author,
+      genre: genre,
+      numberOfPages: numberOfPages,
+      reservedBy: reservedBy,
+      returnDate: returnDate(),
+    );
+  }
 }
 
 class Movie extends Item with EquatableMixin {
   final String title;
+  final List<String> actors;
 
   //minutes
   final int duration;
@@ -89,6 +114,7 @@ class Movie extends Item with EquatableMixin {
     super.reservedBy,
     required this.title,
     required this.duration,
+    this.actors = const ['Actor 1', 'Actor 2'],
   });
 
   @override
@@ -103,7 +129,18 @@ class Movie extends Item with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [title, duration];
+  int credits() {
+    return actors.length * 10;
+  }
+
+  @override
+  List<Object?> get props => [title, duration, reservedBy];
+
+  @override
+  Item copy() {
+    // TODO: implement copy
+    throw UnimplementedError();
+  }
 }
 
 class Magazine extends Item with EquatableMixin {
@@ -113,7 +150,7 @@ class Magazine extends Item with EquatableMixin {
 
   Magazine(
       {super.returnDate,
-        super.reservedBy,
+      super.reservedBy,
       required this.name,
       required this.number,
       required this.publicationDate});
@@ -129,6 +166,11 @@ class Magazine extends Item with EquatableMixin {
   }
 
   @override
+  int credits() {
+   return 200;
+  }
+
+  @override
   Duration numberOfDaysToReturn() {
     final int daysToAdd = switch (publicationDate.year) {
       < 1980 => 2,
@@ -139,5 +181,11 @@ class Magazine extends Item with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [name, number, publicationDate];
+  List<Object?> get props => [name, number, publicationDate, reservedBy];
+
+  @override
+  Item copy() {
+    // TODO: implement copy
+    throw UnimplementedError();
+  }
 }

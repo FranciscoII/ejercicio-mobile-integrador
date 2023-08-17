@@ -11,7 +11,7 @@ abstract class ItemState {
 
   DateTime? returnDate();
 
-  reservedBy() {}
+  Person? reservedBy();
 }
 
 class AvailableState implements ItemState {

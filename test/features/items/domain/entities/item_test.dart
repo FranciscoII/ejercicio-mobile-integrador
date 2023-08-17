@@ -94,6 +94,30 @@ void main(){
       expectItemReturnDateIsAfterXDays(aMagazinePublishedAfter2000, 5);
     });
   });
+  group('regarding item credits', (){
+    group('book credits', (){
+      test('are 10 if the genre is Drama', () {
+        final aDramaBook = Book(title: 'title', author: 'author', genre: Genre.drama, numberOfPages: 200);
+        expect(aDramaBook.credits(), 10);
+      });
+      test('are 20 if the genre is Terror', () {
+        final aTerrorBook = Book(title: 'title', author: 'author', genre: Genre.terror, numberOfPages: 200);
+        expect(aTerrorBook.credits(), 20);
+      });
+      test('are 30 if the genre is other', () {
+        final aBookWithOtherGenre = Book(title: 'title', author: 'author', genre: Genre.other, numberOfPages: 200);
+        expect( aBookWithOtherGenre.credits(), 30);
+      });
+    });
+    test('movie credits are 10 * number of actors', () {
+      final aMovieWithTwoActors = Movie(title: 'Barbie', duration: 150, actors: ['Jennifer Lawrence', 'Margot Robie']);
+
+      expect(aMovieWithTwoActors.credits(), 20);
+    });
+    test('magazine credits are 3 * number of leters of the publication', () {
+      //TODO
+    });
+  });
 }
 void expectItemReturnDateIsAfterXDays(Item item, int days){
   final expectedDate = DateTime.now().add(Duration(days: days));

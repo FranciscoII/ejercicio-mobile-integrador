@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrador_mobile/features/items/presentation/cubit/item_list_cubit.dart';
 import 'package:intl/intl.dart';
 
 import '../../domain/entities/item.dart';
@@ -6,11 +8,12 @@ import '../pages/detailPage.dart';
 
 class ItemContent extends StatelessWidget {
   final Item item;
-
   const ItemContent({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
+    final ItemListCubit cubit = context.read<ItemListCubit>();
+
     return Row(
       children: [
         Expanded(
@@ -35,8 +38,11 @@ class ItemContent extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                                item: item,
+                          builder: (context) => BlocProvider.value(
+                                value: cubit,
+                                child: DetailPage(
+                                  item: item,
+                                ),
                               ))),
                 },
             child: const Icon(Icons.arrow_forward_ios))
@@ -49,7 +55,7 @@ Widget _buildContent(Item item) {
   if (item.isReserved()) {
     return Column(children: [
       InfoLabel(
-          text: 'Reservado por ${item.reservedBy.name}',
+          text: 'Reservado por ${item.reservedBy!.name}',
           icon: Icons.calendar_month),
       const SizedBox(
         height: 5.0,

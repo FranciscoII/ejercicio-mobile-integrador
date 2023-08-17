@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrador_mobile/features/items/data/repositories/item_repository_impl.dart';
 import 'package:integrador_mobile/features/items/domain/repositories/item_repository.dart';
 import 'package:integrador_mobile/features/items/presentation/cubit/item_list_cubit.dart';
-
 import '../../domain/entities/item.dart';
-import '../../domain/entities/person.dart';
 import '../widgets/ItemContent.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key, required this.title});
 
-  final items = ItemRepositoryImpl().itemList;
+  //final items = ItemRepositoryImpl().itemList;
   final String title;
 
   @override
@@ -27,7 +24,7 @@ class HomePage extends StatelessWidget {
       ),
       body: BlocProvider(
           create: (_) =>
-              ItemListCubit([], repository: context.read<ItemRepository>())
+              ItemListCubit(repository: context.read<ItemRepository>())
                 ..fetchItems(),
           child: const HomepageContent()),
     );
@@ -65,5 +62,4 @@ class HomepageContent extends StatelessWidget {
   Widget? _buildItems(BuildContext context, int index, List<Item> items) {
     return ItemContent(item: items[index]);
   }
-
 }
