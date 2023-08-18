@@ -27,6 +27,14 @@ class ItemListCubit extends Cubit<ItemListState> {
     itemList[index] = newItem;
     emit(ItemListState.success(itemList));
   }
+  Future<void> returnItem(Item item) async {
+    final itemList = [...state.items];
+    final index = itemList.indexOf(item);
+    final newItem = item.copy();
+    newItem.returnToStore();
+    itemList[index] = newItem;
+    emit(ItemListState.success(itemList));
+  }
 }
 
 enum ListStatus { loading, success, failure }

@@ -137,9 +137,14 @@ class Movie extends Item with EquatableMixin {
   List<Object?> get props => [title, duration, reservedBy];
 
   @override
-  Item copy() {
-    // TODO: implement copy
-    throw UnimplementedError();
+  Movie copy() {
+    return Movie(
+      title: title,
+      duration: duration,
+      actors: actors,
+      returnDate: returnDate(),
+      reservedBy: reservedBy,
+    );
   }
 }
 
@@ -167,7 +172,7 @@ class Magazine extends Item with EquatableMixin {
 
   @override
   int credits() {
-   return 200;
+    return 782;
   }
 
   @override
@@ -184,8 +189,13 @@ class Magazine extends Item with EquatableMixin {
   List<Object?> get props => [name, number, publicationDate, reservedBy];
 
   @override
-  Item copy() {
-    // TODO: implement copy
-    throw UnimplementedError();
+  Magazine copy() {
+    return Magazine(
+      name: name,
+      number: number,
+      publicationDate: publicationDate,
+      returnDate: returnDate(),
+      reservedBy: reservedBy,
+    );
   }
 }

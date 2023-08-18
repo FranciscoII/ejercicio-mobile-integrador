@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrador_mobile/features/items/presentation/cubit/item_list_cubit.dart';
-import 'package:intl/intl.dart';
+import 'package:integrador_mobile/features/items/presentation/widgets/reservation_credits_information.dart';
 
 import '../../domain/entities/item.dart';
 import '../pages/detailPage.dart';
+import 'info_label.dart';
 
 class ItemContent extends StatelessWidget {
   final Item item;
+
   const ItemContent({super.key, required this.item});
 
   @override
@@ -24,12 +26,15 @@ class ItemContent extends StatelessWidget {
               child: ItemTitle(title: item.description()),
             ),
             _buildContent(item),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(Icons.library_add_check),
-                Icon(Icons.airplane_ticket)
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: ReservationsAndCreditsInformation(
+                  numberOfReservations: item.numberOfReservations,
+                  credits: item.credits(),
+                ),
+              ),
             )
           ],
         )),
@@ -60,10 +65,7 @@ Widget _buildContent(Item item) {
       const SizedBox(
         height: 5.0,
       ),
-      InfoLabel(
-          text:
-              'Devolucion prevista el ${DateFormat('dd/MM/yyyy').format(item.returnDate()!)}',
-          icon: Icons.check_circle_rounded),
+      InfoLabel.returnToStoreDate(item.returnDate()!),
     ]);
   } else {
     return InfoLabel.available();
@@ -88,35 +90,6 @@ class ItemTitle extends StatelessWidget {
           style: Theme.of(context).textTheme.labelMedium,
           overflow: TextOverflow.ellipsis,
         ),
-      ],
-    );
-  }
-}
-
-class InfoLabel extends StatelessWidget {
-  final String text;
-  final IconData icon;
-
-  const InfoLabel({super.key, required this.text, required this.icon});
-
-  factory InfoLabel.available() {
-    return const InfoLabel(
-      text: 'Disponible',
-      icon: Icons.calendar_month,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Icon(icon),
-        const SizedBox(width: 4.0),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.labelSmall,
-        )
       ],
     );
   }

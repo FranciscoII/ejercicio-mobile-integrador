@@ -7,11 +7,14 @@ import 'features/items/presentation/pages/homepage.dart';
 
 void main() {
   initializeDateFormatting();
-  runApp(MyApp(itemRepository: ItemRepositoryImpl(),));
+  runApp(MyApp(
+    itemRepository: ItemRepositoryImpl(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final ItemRepository itemRepository;
+
   const MyApp({required this.itemRepository, super.key});
 
   // This widget is the root of your application.
@@ -21,7 +24,10 @@ class MyApp extends StatelessWidget {
       title: 'RESERVAS',
       theme: ThemeData(
         fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white24),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(224, 220, 220, 1),
+            secondary: const Color.fromRGBO(224, 220, 220, 1),
+        ),
         useMaterial3: true,
         textTheme: const TextTheme(
           titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
@@ -52,7 +58,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: RepositoryProvider.value(value: itemRepository, child: HomePage(title: 'RESERVAS')),
+      home: RepositoryProvider.value(
+          value: itemRepository, child: HomePage(title: 'RESERVAS')),
     );
   }
 }
