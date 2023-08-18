@@ -10,7 +10,7 @@ class ItemRepositoryImpl implements ItemRepository{
     Movie(title: 'Fight Club', duration: 144, reservedBy: Person('Francisco Cortez'), returnDate: DateTime.now().add(Duration(days: 2))),
     Magazine(name: 'Superman', number: 4, publicationDate: DateTime.now()),
     Movie(title: 'Amadeus', duration: 160),
-    Book(title: 'Robison Crusoe', author: 'Daniel Defoe', numberOfPages: 575, genre: Genre.other),
+    Book(title: 'Robinson Crusoe', author: 'Daniel Defoe', numberOfPages: 575, genre: Genre.other),
     Movie(title: 'Rain Man', duration: 133),
     Movie(title: 'Dances with Wolves', duration: 181),
     Movie(title: 'Forrest Gump', duration: 142),
