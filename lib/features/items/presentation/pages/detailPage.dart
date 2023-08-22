@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrador_mobile/features/items/domain/entities/person.dart';
+import 'package:integrador_mobile/features/items/presentation/widgets/detail_page_action_button.dart';
 import 'package:integrador_mobile/features/items/presentation/widgets/reservation_credits_information.dart';
 import '../../domain/entities/item.dart';
 import '../cubit/item_list_cubit.dart';
@@ -124,29 +125,22 @@ class ReservedItemContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Scaffold.of(context).showBottomSheet((context) =>DetailPageActionButton(
+      item: item,
+      text: 'ext',
+      onPress: () {
+        item.isReserved()
+            ? context.read<ItemListCubit>().returnItem(item)
+            : context.read<ItemListCubit>().reserveItem(item, Person('hola'));
+        Navigator.pop(context);
+      },
+    ));
+
     return Center(
       child: Column(children: [
         InfoLabel(
             text: 'Reservado por ${item.reservedBy!.name}',
             icon: Icons.calendar_month),
-        const SizedBox(
-          height: 10,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.zero)),
-              minimumSize: const Size.fromHeight(40),
-              backgroundColor: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
-            context.read<ItemListCubit>().returnItem(item);
-            Navigator.pop(context);
-          },
-          child: Text(
-            'Marcar como devuelto',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ),
       ]),
     );
   }
